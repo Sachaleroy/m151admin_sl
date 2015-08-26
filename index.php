@@ -1,3 +1,8 @@
+<?php
+
+require_once './php/dbfunctions.php';
+connexionBase();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,29 +13,31 @@
     </head>
     <body>
         <div id="content">
-            <label class="labelSize">Nom :</label>
-            <input type="text" class="InputFormulaire"><br/>
-            
-            <label class="labelSize">Prénom :</label>
-            <input type="text" class="InputFormulaire"><br/>
-            
-            <label class="labelSize">Date de naissance :</label>
-            <input type="date" class="InputFormulaire"><br/>
-            
-            <label for="description" class="labelSize">Mini description :</label>
-            <textarea id="description" class="InputFormulaire"></textarea><br/>
-            
-            <label class="labelSize">Email :</label>
-            <input type="email" class="InputFormulaire"><br/>
-            
-            <label class="labelSize">Pseudo :</label>
-            <input type="text" class="InputFormulaire"><br/>
-            
-            <label class="labelSize">Mot de passe :</label>
-            <input type="password" class="InputFormulaire"><br/>
-            
-            <input type="button" value="Envoyer">
-            <input type="button" value="Réinitialiser">
+            <form action="dbFunctions.php" method="post">
+                <label class="labelSize">Nom :</label>
+                <input type="text" class="InputFormulaire"><br/>
+
+                <label class="labelSize">Prénom :</label>
+                <input type="text" class="InputFormulaire"><br/>
+
+                <label class="labelSize">Date de naissance :</label>
+                <input type="date" class="InputFormulaire"><br/>
+
+                <label for="description" class="labelSize">Mini description :</label>
+                <textarea id="description" class="InputFormulaire"></textarea><br/>
+
+                <label class="labelSize">Email :</label>
+                <input type="email" class="InputFormulaire"><br/>
+
+                <label class="labelSize">Pseudo :</label>
+                <input type="text" class="InputFormulaire"><br/>
+
+                <label class="labelSize">Mot de passe :</label>
+                <input type="password" class="InputFormulaire"><br/>
+
+                <input type="submit" value="Envoyer" name="submit" >
+                <input type="reset" value="Réinitialiser">
+            </form>
         </div>
     </body>
 </html>

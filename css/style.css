@@ -1,8 +1,6 @@
 body
 {
     background-color : gainsboro;
-    margin: auto;
-    padding: auto;
 }
 #content
 {
@@ -12,6 +10,8 @@ body
     padding-left: 70px;
     padding-top: 20px;
     padding-bottom: 20px;
+    margin: auto;
+    border-radius: 15px;
 }
 #description
 {
