@@ -1,0 +1,30 @@
+body
+{
+    background-color : gainsboro;
+    margin: auto;
+    padding: auto;
+}
+#content
+{
+    position: relative;
+    background-color: silver;
+    width: 500px;
+    padding-left: 70px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+#description
+{
+    height: 70px;
+    resize: none;
+}
+.InputFormulaire
+{
+    width: 200px;
+}
+.labelSize
+{
+    display: block;
+    width: 150px;
+    float: left;
+}
