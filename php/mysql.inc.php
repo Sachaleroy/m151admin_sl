@@ -1,6 +1,6 @@
 <?php
-
-  define("HOST","127.0.0.1");
-  define("DBNAME","m151admin");
-  define("USERNAME","m151admin");
-  define("PASSWORD","m151admin");
+/* fichier de déclaration de constantes */
+  DEFINE("HOST","127.0.0.1");
+  DEFINE("DBNAME","m151admin");
+  DEFINE("USERNAME","m151admin");
+  DEFINE("PASSWORD","m151admin");
