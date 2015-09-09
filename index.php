@@ -33,6 +33,7 @@
 
                 <input type="submit" value="Envoyer" name="submit" >
                 <input type="reset" value="Réinitialiser">
+                <a href="php/utilisateurs.php">liste d'utilisateurs</a>
             </form>
         </div>
     </body>
