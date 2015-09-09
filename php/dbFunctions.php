@@ -18,20 +18,21 @@ function connexionBase()
 	return $connection;
 }
 
-if(isset($_POST['submit']))
+if(isset($_REQUEST['submit']))
 {
     insertionBase();
 }
 
 function insertionBase()
 {   
-    $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
-    $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
-    $dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_STRING);
-    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
-    $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
-    $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
+    $nom = filter_input(INPUT_REQUEST, 'nom', FILTER_SANITIZE_STRING);
+    $prenom = filter_input(INPUT_REQUEST, 'prenom', FILTER_SANITIZE_STRING);
+    $dateNaissance = filter_input(INPUT_REQUEST, 'dateNaissance', FILTER_SANITIZE_STRING);
+    $description = filter_input(INPUT_REQUEST, 'description', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_REQUEST, 'email', FILTER_SANITIZE_STRING);
+    $pseudo = filter_input(INPUT_REQUEST, 'pseudo', FILTER_SANITIZE_STRING);
+    $mdp = filter_input(INPUT_REQUEST, 'mdp', FILTER_SANITIZE_STRING);
+    $mdp = Sha1($mdp);
     
     $data = connexionBase()->prepare('INSERT INTO user VALUES("", :nom, :prenom, :email, :dateNaissance, :pseudo, :mdp, :description)');
     $data->bindParam(':nom', $nom, PDO::PARAM_STR);
