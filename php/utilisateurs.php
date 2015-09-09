@@ -33,6 +33,12 @@
                     <td>
                         <p>Description</p>
                     </td>
+                    <td>
+                        <p>Détails</p>
+                    </td>
+                    <td>
+                        <p>Modifier</p>
+                    </td>
                 </tr>
             <?php
                 createTableUser(listUser());   
