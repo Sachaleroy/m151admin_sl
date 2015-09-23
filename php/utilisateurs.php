@@ -31,6 +31,9 @@
                         <p>Pseudo</p>
                     </td>
                     <td>
+                        <p>Description</p>
+                    </td>
+                    <td>
                         <p>Détails</p>
                     </td>
                     <td>
