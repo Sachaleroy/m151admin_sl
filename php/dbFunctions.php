@@ -32,6 +32,10 @@ if(isset($_POST['submit']))
 {
     insertionBase();
 }
+if(isset($_POST['submitModif']))
+{
+    UpdateBase();
+}
 
 function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp)
 {   
@@ -46,6 +50,11 @@ function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pse
     $data->execute();
     
     header('Location: ../index.php');
+}
+
+function updateBase()
+{
+    echo "Salut";
 }
 
 function listUser()
