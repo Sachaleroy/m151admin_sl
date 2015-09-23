@@ -6,6 +6,8 @@ $dateNaissance;
 $description;
 $email;
 $pseudo;
+$modif = "";
+$required = "required";
 if(isset($_GET["modif"])){
     $donneesUtilisateur = donneesFormulaireModif($_GET["modif"]);
     $nom = $donneesUtilisateur[0]["nom"];
@@ -14,6 +16,8 @@ if(isset($_GET["modif"])){
     $description = $donneesUtilisateur[0]["description"];
     $email = $donneesUtilisateur[0]["email"];
     $pseudo = $donneesUtilisateur[0]["pseudo"];
+    $modif = "Modif";
+    $required = '';
 }
 ?>
 <!DOCTYPE html>
@@ -46,9 +50,9 @@ if(isset($_GET["modif"])){
                 <input id="pseudo" name="pseudo" type="text" class="InputFormulaire" value="<?php echo $pseudo ?>" required><br/>
 
                 <label for="mdp" class="labelSize">Mot de passe :</label>
-                <input id="mdp" name="mdp" type="password" class="InputFormulaire" required><br/>
+                <input id="mdp" name="mdp" type="password" class="InputFormulaire" <?php echo $required ?>><br/>
 
-                <input type="submit" value="Envoyer" name="submit" >
+                <input type="submit" value="Envoyer <?php echo $modif ?>" name="submit<?php echo $modif ?>" >
                 <input type="reset" value="Réinitialiser">
                 <a href="php/utilisateurs.php">liste d'utilisateurs</a>
             </form>
