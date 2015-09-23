@@ -1,4 +1,4 @@
-<?php 
+<?php
     include './dbFunctions.php';
     include './phpToHtml.php';
 ?>
@@ -31,17 +31,14 @@
                         <p>Pseudo</p>
                     </td>
                     <td>
-                        <p>Détails</p>
-                    </td>
-                    <td>
-                        <p>Modifier</p>
+                        <p>Description</p>
                     </td>
                 </tr>
             <?php
-                createTableUser(listUser());   
+                createTableDetailsUser(detailsUser($_GET["page"]));   
             ?>
             </table>
-            <a href='../index.php'>Retour</a>
+            <a href='./utilisateurs.php'>Retour</a>
         </div>
     </body>
 </html>

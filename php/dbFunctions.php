@@ -1,6 +1,18 @@
 <?php
 require_once 'mysql.inc.php';
 
+//Filtrage des données du formulaire
+$nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
+$prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
+$dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_STRING);
+$description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+$pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
+$mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
+$mdp = Sha1($mdp);
+
+
+//Fonction de connexion à la base
 function connexionBase()
 {
     static $connection = null;
@@ -19,22 +31,15 @@ function connexionBase()
 	return $connection;
 }
 
+//Si le formulaire est envoyé
 if(isset($_POST['submit']))
 {
-    insertionBase();
+    insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp);
 }
 
-function insertionBase()
+//Fonction d'insertion de données dans la base
+function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp)
 {   
-    $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
-    $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
-    $dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_STRING);
-    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
-    $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
-    $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
-    $mdp = Sha1($mdp);
-    
     $data = connexionBase()->prepare('INSERT INTO user VALUES("", :nom, :prenom, :email, :dateNaissance, :pseudo, :mdp, :description)');
     $data->bindParam(':nom', $nom, PDO::PARAM_STR);
     $data->bindParam(':prenom', $prenom, PDO::PARAM_STR);
@@ -48,6 +53,7 @@ function insertionBase()
     header('Location: ../index.php');
 }
 
+//Fonction qui crée un tableau contenant tout les utilisateurs de la base plus leur infos
 function listUser()
 {
     $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user');
@@ -55,3 +61,18 @@ function listUser()
     return $req;
 }
 
+function detailsUser($idUser)
+{
+    $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user WHERE idUser ='.$idUser);
+    $req->execute();
+    return $req;
+}
+
+function donneesFormulaireModif($idUser)
+{
+    $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user WHERE idUser ='.$idUser);
+    $req->execute();
+    $result = $req->fetchAll(PDO::FETCH_ASSOC);
+    //var_dump($result);
+    return $result; 
+}
