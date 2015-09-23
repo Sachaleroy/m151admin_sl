@@ -1,6 +1,15 @@
 <?php
 require_once 'mysql.inc.php';
 
+$nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
+    $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
+    $dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_STRING);
+    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+    $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
+    $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
+    $mdp = Sha1($mdp);
+
 function connexionBase()
 {
     static $connection = null;
@@ -24,17 +33,8 @@ if(isset($_POST['submit']))
     insertionBase();
 }
 
-function insertionBase()
+function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp)
 {   
-    $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
-    $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
-    $dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_STRING);
-    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
-    $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
-    $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
-    $mdp = Sha1($mdp);
-    
     $data = connexionBase()->prepare('INSERT INTO user VALUES("", :nom, :prenom, :email, :dateNaissance, :pseudo, :mdp, :description)');
     $data->bindParam(':nom', $nom, PDO::PARAM_STR);
     $data->bindParam(':prenom', $prenom, PDO::PARAM_STR);
@@ -55,3 +55,18 @@ function listUser()
     return $req;
 }
 
+function detailsUser($idUser)
+{
+    $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user WHERE idUser ='.$idUser);
+    $req->execute();
+    return $req;
+}
+
+function donneesFormulaireModif($idUser)
+{
+    $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user WHERE idUser ='.$idUser);
+    $req->execute();
+    $result = $req->fetchAll(PDO::FETCH_ASSOC);
+    //var_dump($result);
+    return $result; 
+}
