@@ -1,5 +1,6 @@
 <?php
 require_once 'mysql.inc.php';
+require_once 'login.php';
 
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
 $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
@@ -9,6 +10,10 @@ $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
 $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
 $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
 $mdp = Sha1($mdp);
+
+$pseudoConnection = filter_input(INPUT_POST, 'pseudoConnection', FILTER_SANITIZE_STRING);
+$mdpConnection = filter_input(INPUT_POST, 'mdpConnection', FILTER_SANITIZE_STRING);
+$mdpConnection = sha1($mdpConnection);
 
 function connexionBase()
 {
@@ -37,12 +42,42 @@ if(isset($_POST['submitModif']))
     $modif = $_GET["modif"];
     UpdateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif);
 }
+
+
+
 if (isset($_POST["login"])) 
 {
-    if (isset) {
+    if (isset($pseudoConnection) && isset($mdpConnection)) 
+    {
+        $result = IdentifiantDisponible($$pseudoConnection, $mdpConnection);
         
+        if ($result != NULL) {
+    		//... et est redirigé sur le site
+			session_start();
+    		$_SESSION['login'] = $_POST['login'];
+    		header('Location: ../index.php');
+    		exit();
+    	}
+    	// si on ne trouve aucune réponse, soit le pseudo, soit le mot de passe est faux
+    	else
+        {
+            $erreur = 'Erreur dans le login ou le mot de passe.';
+        }
     }
 }
+
+function IdentifiantDisponible($user, $pass)
+{
+	$data = connexionBase()->prepare('SELECT pseudo, password FROM user WHERE pseudo=:pseudo AND password=:mdp');
+	$data->bindParam(':pseudo', $user, PDO::PARAM_STR);
+	$data->bindParam(':mdp', $pass, PDO::PARAM_STR);
+	$data->execute();
+	$result = $data->fetch(PDO::FETCH_ASSOC);
+	return $result;
+}
+
+
+
 if(isset($_GET["suppr"]))
 {
     $idSuppr = $_GET["suppr"];
