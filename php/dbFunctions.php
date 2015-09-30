@@ -30,12 +30,23 @@ function connexionBase()
 
 if(isset($_POST['submit']))
 {
-    insertionBase();
+    insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp);
 }
 if(isset($_POST['submitModif']))
 {
     $modif = $_GET["modif"];
     UpdateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif);
+}
+if (isset($_POST["login"])) 
+{
+    if (isset) {
+        
+    }
+}
+if(isset($_GET["suppr"]))
+{
+    $idSuppr = $_GET["suppr"];
+    SupprUser($idSuppr);
 }
 
 function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp)
@@ -75,6 +86,13 @@ function updateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo
     header('Location: ./utilisateurs.php');
 }
 
+function SupprUser($idSuppr)
+{
+    $req = connexionBase()->prepare('DELETE FROM user WHERE idUser='.$idSuppr);
+    $req->execute();
+    header('Location: ./utilisateurs.php');
+}
+
 function listUser()
 {
     $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user');
@@ -94,6 +112,5 @@ function donneesFormulaireModif($idUser)
     $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user WHERE idUser ='.$idUser);
     $req->execute();
     $result = $req->fetchAll(PDO::FETCH_ASSOC);
-    //var_dump($result);
     return $result; 
 }
