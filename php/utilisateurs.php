@@ -36,6 +36,9 @@
                     <td>
                         <p>Modifier</p>
                     </td>
+                    <td>
+                        <p>Supprimer</p>
+                    </td>
                 </tr>
             <?php
                 createTableUser(listUser());   
