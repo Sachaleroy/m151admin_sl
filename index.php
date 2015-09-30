@@ -8,6 +8,7 @@ $email;
 $pseudo;
 $modif = "";
 $required = "required";
+$idModif = "";
 if(isset($_GET["modif"])){
     $donneesUtilisateur = donneesFormulaireModif($_GET["modif"]);
     $nom = $donneesUtilisateur[0]["nom"];
@@ -18,6 +19,7 @@ if(isset($_GET["modif"])){
     $pseudo = $donneesUtilisateur[0]["pseudo"];
     $modif = "Modif";
     $required = '';
+    $idModif = "?modif=".$_GET["modif"];
 }
 ?>
 <!DOCTYPE html>
@@ -30,7 +32,7 @@ if(isset($_GET["modif"])){
     </head>
     <body>
         <div id="content">
-            <form action="./php/dbFunctions.php" method="post">
+            <form action="./php/dbFunctions.php<?php echo $idModif ?>" method="post">
                 <label for="nom" class="labelSize">Nom :</label>
                 <input id="nom" name="nom" type="text" class="InputFormulaire" value="<?php echo $nom ?>" required><br/>
 
