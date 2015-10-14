@@ -148,3 +148,17 @@ function donneesFormulaireModif($idUser)
     $result = $req->fetchAll(PDO::FETCH_ASSOC);
     return $result; 
 }
+
+function TestLogin($username, $password)
+{
+    $req = connexionBase()-> prepare('SELECT pseudo, password FROM user WHERE pseudo = "'.$username. '"');
+    $req->execute();
+    $result = $req->fetchAll(PDO::FETCH_ASSOC);
+    $logged = false;
+    if (sha1($password) == $result[0]['password']) {
+        $logged = true;
+    }
+    
+    $output = $logged ? $username . ' est connecté !' : 'connexion echouée';
+    return $output;
+}

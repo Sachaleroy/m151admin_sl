@@ -28,3 +28,9 @@ body
     width: 150px;
     float: left;
 }
+
+fieldset
+{
+    width: 200px;
+    margin: auto;
+}
