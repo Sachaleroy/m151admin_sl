@@ -1,7 +1,10 @@
 <?php
 require_once 'dbFunctions.php';
-$swagg = TestLogin("swagg", "dsf");
-echo $swagg;
+//$swagg = TestLogin($pseudoConnection, $mdpConnection);
+if(isset($_POST['login']))
+{
+    echo TestLogin($pseudoConnection, $mdpConnection);
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,7 +18,7 @@ echo $swagg;
         <div id="content">
             <fieldset>
                 <legend>Login</legend>
-                <form action="./php/dbFunctions.php" method="post">
+                <form action="#" method="post">
                     <label for="Pseudo" class="labelSize">Pseudo :</label>
                     <input id="Pseudo" name="pseudoConnection" type="text" class="InputFormulaire" required><br/>
                     <label for="mdp" class="labelSize">Mot de passe :</label>
