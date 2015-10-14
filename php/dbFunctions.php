@@ -1,6 +1,5 @@
 <?php
 require_once 'mysql.inc.php';
-require_once 'login.php';
 
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
 $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
