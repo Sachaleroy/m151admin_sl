@@ -129,7 +129,7 @@ function SupprUser($idSuppr)
 
 function listUser()
 {
-    $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user');
+    $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description, estAdmin FROM user');
     $req->execute();
     return $req;
 }
@@ -146,6 +146,14 @@ function donneesFormulaireModif($idUser)
     $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user WHERE idUser ='.$idUser);
     $req->execute();
     $result = $req->fetchAll(PDO::FETCH_ASSOC);
+    return $result; 
+}
+
+function estAdmin($pseudo)
+{
+    $req = connexionBase()-> prepare('SELECT idUser FROM user WHERE pseudo ="'.$pseudo.'" AND estAdmin = "1"');
+    $req->execute();
+    $result = $req->fetch(PDO::FETCH_ASSOC);
     return $result; 
 }
 
