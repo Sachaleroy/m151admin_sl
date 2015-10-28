@@ -9,6 +9,7 @@ $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
 $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
 $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
 $mdp = Sha1($mdp);
+$estAdmin = filter_input(INPUT_POST, 'changerAdmin', FILTER_SANITIZE_STRING);
 
 $pseudoConnection = filter_input(INPUT_POST, 'pseudoConnection', FILTER_SANITIZE_STRING);
 $mdpConnection = filter_input(INPUT_POST, 'mdpConnection', FILTER_SANITIZE_STRING);
@@ -39,7 +40,7 @@ if(isset($_POST['submit']))
 if(isset($_POST['submitModif']))
 {
     $modif = $_GET["modif"];
-    UpdateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif);
+    UpdateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif, $estAdmin);
 }
 
 
@@ -100,13 +101,27 @@ function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pse
 
 function updateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif)
 {
-    if ($mdp == "") 
+    if($estAdmin == "")
     {
-        $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description WHERE idUser='.$modif);
+        if ($mdp == "") 
+        {
+            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description WHERE idUser='.$modif);
+        }
+        else
+        {
+            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, password=:mdp WHERE idUser='.$modif);
+        }
     }
     else
     {
-        $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, password=:mdp WHERE idUser='.$modif);
+        if ($mdp == "") 
+        {
+            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, estAdmin=:estAdmin WHERE idUser='.$modif);
+        }
+        else
+        {
+            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, password=:mdp, estAdmin=:estAdmin WHERE idUser='.$modif);
+        }
     }
     $req->bindParam(':nom', $nom, PDO::PARAM_STR);
     $req->bindParam(':prenom', $prenom, PDO::PARAM_STR);
@@ -115,6 +130,7 @@ function updateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo
     $req->bindParam(':email', $email, PDO::PARAM_STR);
     $req->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
     $req->bindParam(':mdp', $mdp, PDO::PARAM_STR);
+    $req->bindParam(':estAdmin', $estAdmin, PDO::PARAM_STR);
     $req->execute();
     
     header('Location: ./utilisateurs.php');
@@ -143,7 +159,7 @@ function detailsUser($idUser)
 
 function donneesFormulaireModif($idUser)
 {
-    $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description FROM user WHERE idUser ='.$idUser);
+    $req = connexionBase()-> prepare('SELECT idUser, nom, prenom, email, dateNaissance, pseudo, description, estAdmin FROM user WHERE idUser ='.$idUser);
     $req->execute();
     $result = $req->fetchAll(PDO::FETCH_ASSOC);
     return $result; 

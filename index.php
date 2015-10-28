@@ -12,6 +12,7 @@ $pseudo;
 $modif = "";
 $required = "required";
 $idModif = "";
+$changerAdmin = false;
 if(isset($_GET["modif"])){
     $donneesUtilisateur = donneesFormulaireModif($_GET["modif"]);
     $nom = $donneesUtilisateur[0]["nom"];
@@ -20,9 +21,14 @@ if(isset($_GET["modif"])){
     $description = $donneesUtilisateur[0]["description"];
     $email = $donneesUtilisateur[0]["email"];
     $pseudo = $donneesUtilisateur[0]["pseudo"];
+    $estAdmin = $donneesUtilisateur[0]["estAdmin"];
     $modif = "Modif";
     $required = '';
     $idModif = "?modif=".$_GET["modif"];
+    if(estAdmin($_SESSION['login']) != "")
+    {
+        $changerAdmin = true;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -66,7 +72,13 @@ if(isset($_GET["modif"])){
 
                 <label for="mdp" class="labelSize">Mot de passe :</label>
                 <input id="mdp" name="mdp" type="password" class="InputFormulaire" <?php echo $required ?>><br/>
-
+                <?php
+                if($changerAdmin)
+                {
+                    echo '<label for="changerAdmin" class="labelSize">Type de compte (0/1) :</label>';
+                    echo '<input type="number" min="0" max="1" name="changerAdmin" value="'.$estAdmin.'" class="InputFormulaire"><br/>';
+                }
+                ?>
                 <input type="submit" value="Envoyer <?php echo $modif ?>" name="submit<?php echo $modif ?>" >
                 <input type="reset" value="Réinitialiser">
                 <a href="php/utilisateurs.php">liste d'utilisateurs</a>
