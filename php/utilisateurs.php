@@ -1,6 +1,7 @@
 <?php 
     include './dbFunctions.php';
     include './phpToHtml.php';
+    session_start();
 ?>
 <html>
     <head>
@@ -9,6 +10,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <?php
+        if(isset($_SESSION['login']))
+        {
+            echo "Utilisateur connecté : ".$_SESSION['login']." |   <a href='./deconnexion.php' style='text-decoration: none;'>Déconnexion</a>";
+        }
+        ?>
         <div id="content">
             <table border="20">
                 <tr>
