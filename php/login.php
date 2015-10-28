@@ -1,10 +1,5 @@
 <?php
 require_once 'dbFunctions.php';
-//$swagg = TestLogin($pseudoConnection, $mdpConnection);
-if(isset($_POST['login']))
-{
-    echo TestLogin($pseudoConnection, $mdpConnection);
-}
 ?>
 <!DOCTYPE html>
 <html>

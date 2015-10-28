@@ -52,8 +52,8 @@ if (isset($_POST["login"]))
         
         if ($result != NULL) {
     		//... et est redirigé sur le site
-			session_start();
-    		$_SESSION['login'] = $_POST['login'];
+		session_start();
+    		$_SESSION['login'] = $pseudoConnection;
     		header('Location: ../index.php');
     		exit();
     	}
@@ -149,22 +149,22 @@ function donneesFormulaireModif($idUser)
     return $result; 
 }
 
-if(isset($_POST['login']))
+/*if(isset($_POST['login']))
 {
     TestLogin($pseudoConnection, $mdpConnection);
-}
+}*/
 
-function TestLogin($username, $password)
+/*function TestLogin($username, $password)
 {
     $req = connexionBase()-> prepare('SELECT pseudo, password FROM user WHERE pseudo = "'.$username. '"');
     $req->execute();
     $result = $req->fetchAll(PDO::FETCH_ASSOC);
     $logged = false;
-    if ($mdpConnection == $result[0]['password']) {
+    if (sha1($mdpConnection) == $result[0]['password']) {
         $logged = true;
     }
     
     $output = $logged ? $username . ' est connecté !' : 'connexion echouée';
-    header('Location: ./login.php');
+    //header('Location: ./login.php');
     return $output;
-}
+}*/

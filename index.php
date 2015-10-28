@@ -1,5 +1,8 @@
 <?php
 require_once "./php/dbFunctions.php";
+
+session_start();
+
 $nom;
 $prenom;
 $dateNaissance;
@@ -31,6 +34,16 @@ if(isset($_GET["modif"])){
         <link rel="stylesheet" href="./css/style.css" type="text/css">
     </head>
     <body>
+        <?php
+        if(!isset($_SESSION['login']))
+        {
+            echo "<a href='./PHP/login.php' style='text-decoration: none;'>Connexion</a>";
+        }
+        if(isset($_SESSION['login']))
+        {
+            echo "Utilisateur connecté : ".$_SESSION['login']." |   <a href='./PHP/deconnexion.php' style='text-decoration: none;'>Déconnexion</a>";
+        }
+        ?>
         <div id="content">
             <form action="./php/dbFunctions.php<?php echo $idModif ?>" method="post">
                 <label for="nom" class="labelSize">Nom :</label>
