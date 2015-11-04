@@ -76,7 +76,7 @@ if(isset($_GET["modif"])){
                 if($changerAdmin)
                 {
                     echo '<label for="changerAdmin" class="labelSize">Type de compte (0/1) :</label>';
-                    echo '<input type="number" min="0" max="1" name="changerAdmin" value="'.$estAdmin.'" class="InputFormulaire"><br/>';
+                    echo '<input type="number" min="0" max="1" name="changerAdmin" value="'.$estAdmin.'" class="InputFormulaire" onkeydown="return false"><br/>';
                 }
                 ?>
                 <input type="submit" value="Envoyer <?php echo $modif ?>" name="submit<?php echo $modif ?>" >

@@ -2,7 +2,11 @@
 include_once 'dbFunctions.php';
 function createTableUser($table)
 {
-    $pseudo = $_SESSION['login'];
+    $pseudo = "";
+    if(isset($_SESSION['login']))
+    {
+        $pseudo = $_SESSION['login'];
+    }
     $estAdmin = estAdmin($pseudo);
     //Pour chaque entrée dans la base...
     foreach($table as $row)
