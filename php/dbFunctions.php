@@ -24,7 +24,14 @@ function connexionBase()
 //Si le bouton d'inscription est cliqué
 if(isset($_POST['submit']))
 {
-    insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp);
+    //if($nom != "" && $prenom != "" && $dateNaissance != "" && $description != "" && $email != "" && $pseudo != ""){
+        insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp);
+    //}
+    /*else
+    {
+        header('Location: ../index.php?erreur=true');
+    }*/
+    
 }
 //Si le bouton de modification est cliqué
 if(isset($_POST['submitModif']))
@@ -97,8 +104,6 @@ function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pse
 //Fonction de mise à jour de la base
 function updateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif, $estAdmin)
 {
-	
-	
     //si l'utilisateur connecté est un admin
     if(estAdmin($_SESSION['login']) == NULL)
     {

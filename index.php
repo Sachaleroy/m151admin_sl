@@ -3,17 +3,23 @@ require_once "./php/dbFunctions.php";
 
 session_start();
 
-$nom;
-$prenom;
-$dateNaissance;
-$description;
-$email;
-$pseudo;
+$nom            = isset($REQUEST['nom'])            ? $REQUEST['nom']            : "";
+$prenom         = isset($REQUEST['prenom'])         ? $REQUEST['prenom']         : "";
+$dateNaissance  = isset($REQUEST['dateNaissance'])  ? $REQUEST['dateNaissance']  : "";
+$description    = isset($REQUEST['description'])    ? $REQUEST['description']    : "";
+$email          = isset($REQUEST['email'])          ? $REQUEST['email']          : "";
+$pseudo         = isset($REQUEST['pseudo'])         ? $REQUEST['pseudo']         : "";
 $modif = "";
 $required = "required";
 $idModif = "";
+$erreur = "false";
 $changerAdmin = false;
-if(isset($_GET["modif"])){
+if(isset($_GET["erreur"]))
+{
+    $erreur = "true";
+}
+if(isset($_GET["modif"]))
+{
     $donneesUtilisateur = donneesFormulaireModif($_GET["modif"]);
     $nom = $donneesUtilisateur[0]["nom"];
     $prenom = $donneesUtilisateur[0]["prenom"];
@@ -51,6 +57,11 @@ if(isset($_GET["modif"])){
         }
         ?>
         <div id="content">
+            <?php
+            if($erreur == "true")
+            {
+                echo "<p style='color:red'>Au moins un des champs n'est pas rempli correctement</p>";
+            }?>
             <form action="./php/dbFunctions.php<?php echo $idModif ?>" method="post">
                 <label for="nom" class="labelSize">Nom :</label>
                 <input id="nom" name="nom" type="text" class="InputFormulaire" value="<?php echo $nom ?>" required><br/>
