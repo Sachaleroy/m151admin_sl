@@ -1,24 +1,6 @@
 <?php
 require_once 'mysql.inc.php';
-
-//On récupère les valeur entrées dans les input
-
-//TODO : on fait cette récupération endehors du fichier de bibliothèque pour la base de données afin de séparer vraiment au mieux 
-//la gestion des données avec l'interface
-$nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
-$prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
-$dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_STRING);
-$description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
-$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
-$pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_STRING);
-
-$mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
-$mdp = Sha1($mdp);
-$estAdmin = filter_input(INPUT_POST, 'changerAdmin', FILTER_SANITIZE_STRING);
-
-$pseudoConnection = filter_input(INPUT_POST, 'pseudoConnection', FILTER_SANITIZE_STRING);
-$mdpConnection = filter_input(INPUT_POST, 'mdpConnection', FILTER_SANITIZE_STRING);
-$mdpConnection = sha1($mdpConnection);
+include 'inputsData.php';
 
 //Fonction de connexion à la base
 function connexionBase()
@@ -96,7 +78,7 @@ if(isset($_GET["suppr"]))
 //Fonction d'insertion dans la base des données des utilisateurs qui s'inscrivent
 function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp)
 {   
-    $data = connexionBase()->prepare('INSERT INTO user VALUES("", :nom, :prenom, :email, :dateNaissance, :pseudo, :mdp, :description)');
+    $data = connexionBase()->prepare('INSERT INTO user VALUES("", :nom, :prenom, :email, :dateNaissance, :pseudo, :mdp, :description, 0)');
     $data->bindParam(':nom', $nom, PDO::PARAM_STR);
     $data->bindParam(':prenom', $prenom, PDO::PARAM_STR);
     $data->bindParam(':dateNaissance', $dateNaissance, PDO::PARAM_STR);
