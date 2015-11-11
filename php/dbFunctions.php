@@ -2,6 +2,9 @@
 require_once 'mysql.inc.php';
 
 //On récupère les valeur entrées dans les input
+
+//TODO : on fait cette récupération endehors du fichier de bibliothèque pour la base de données afin de séparer vraiment au mieux 
+//la gestion des données avec l'interface
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
 $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
 $dateNaissance = filter_input(INPUT_POST, 'dateNaissance', FILTER_SANITIZE_STRING);
@@ -106,9 +109,14 @@ function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pse
     header('Location: ../index.php');
 }
 
+//TODO attention ici vous utilisez $_SESSION et INPUT_POST dans une fonction qui sert à traiter avec la bd, on évite de mélanger les deux
+//vous avez très bien fait le reste de la séparation du code sinon.
+
 //Fonction de mise à jour de la base
 function updateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif, $estAdmin)
 {
+	
+	
     //si l'utilisateur connecté est un admin
     if(estAdmin($_SESSION['login']) == NULL)
     {
