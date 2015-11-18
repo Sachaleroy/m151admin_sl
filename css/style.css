@@ -29,6 +29,19 @@ body
     float: left;
 }
 
+.labelSelectSize
+{
+    display: block;
+    width: 100px;
+    float: left;
+}
+
+select
+{
+    width: 150px;
+    margin-bottom: 5px;
+}
+
 fieldset
 {
     width: 200px;
