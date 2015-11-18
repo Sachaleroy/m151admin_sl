@@ -24,13 +24,13 @@ function connexionBase()
 //Si le bouton d'inscription est cliqué
 if(isset($_POST['submit']))
 {
-    //if($nom != "" && $prenom != "" && $dateNaissance != "" && $description != "" && $email != "" && $pseudo != ""){
-        insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp);
-    //}
-    /*else
+    if($nom != "" && $prenom != "" && $dateNaissance != "" && $description != "" && $email != "" && $pseudo != ""){
+        insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $classe);
+    }
+    else
     {
         header('Location: ../index.php?erreur=true');
-    }*/
+    }
     
 }
 //Si le bouton de modification est cliqué
@@ -63,6 +63,12 @@ if (isset($_POST["login"]))
     }
 }
 
+//Si le bouton pour le choix des sports est cliqué
+if(isset($_POST["envoyerChoix"]))
+{
+    choixSports();
+}
+
 //Fonction pour tester si les identifiants existent
 function IdentifiantDisponible($user, $pass)
 {
@@ -83,9 +89,9 @@ if(isset($_GET["suppr"]))
 }
 
 //Fonction d'insertion dans la base des données des utilisateurs qui s'inscrivent
-function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp)
+function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $classe)
 {   
-    $data = connexionBase()->prepare('INSERT INTO user VALUES("", :nom, :prenom, :email, :dateNaissance, :pseudo, :mdp, :description, 0)');
+    $data = connexionBase()->prepare('INSERT INTO user VALUES("", :nom, :prenom, :email, :dateNaissance, :pseudo, :mdp, :description, 0, :classe)');
     $data->bindParam(':nom', $nom, PDO::PARAM_STR);
     $data->bindParam(':prenom', $prenom, PDO::PARAM_STR);
     $data->bindParam(':dateNaissance', $dateNaissance, PDO::PARAM_STR);
@@ -93,6 +99,7 @@ function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pse
     $data->bindParam(':email', $email, PDO::PARAM_STR);
     $data->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
     $data->bindParam(':mdp', $mdp, PDO::PARAM_STR);
+    $data->bindParam(':classe', $classe, PDO::PARAM_STR);
     $data->execute();
     
     header('Location: ../index.php');
@@ -102,18 +109,18 @@ function insertionBase($nom, $prenom, $dateNaissance, $description, $email, $pse
 //vous avez très bien fait le reste de la séparation du code sinon.
 
 //Fonction de mise à jour de la base
-function updateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif, $estAdmin)
+function updateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif, $estAdmin, $classe)
 {
     //si l'utilisateur connecté est un admin
     if(estAdmin($_SESSION['login']) == NULL)
     {
         if (filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING) == NULL) 
         {
-            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description WHERE idUser='.$modif);
+            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, idClasse=:classe WHERE idUser='.$modif);
         }
         else
         {
-            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, password=:mdp WHERE idUser='.$modif);
+            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, password=:mdp, idClasse=:classe WHERE idUser='.$modif);
             $req->bindParam(':mdp', $mdp, PDO::PARAM_STR);
         }
     }
@@ -122,11 +129,11 @@ function updateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo
     {
         if (filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING) == NULL) 
         {
-            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, estAdmin=:estAdmin WHERE idUser='.$modif);
+            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, estAdmin=:estAdmin, idClasse=:classe WHERE idUser='.$modif);
         }
         else
         {
-            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, password=:mdp, estAdmin=:estAdmin WHERE idUser='.$modif);
+            $req = connexionBase()-> prepare('UPDATE user SET nom=:nom, prenom=:prenom, email=:email, dateNaissance=:dateNaissance, pseudo=:pseudo, description=:description, password=:mdp, estAdmin=:estAdmin, idClasse=:classe WHERE idUser='.$modif);
             $req->bindParam(':mdp', $mdp, PDO::PARAM_STR);
         }
         $req->bindParam(':estAdmin', $estAdmin, PDO::PARAM_STR);
@@ -137,6 +144,7 @@ function updateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo
     $req->bindParam(':description', $description, PDO::PARAM_STR);
     $req->bindParam(':email', $email, PDO::PARAM_STR);
     $req->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
+    $req->bindParam(':classe', $classe, PDO::PARAM_STR);
     
     $req->execute();
     
@@ -183,6 +191,27 @@ function estAdmin($pseudo)
     $req->execute();
     $result = $req->fetch(PDO::FETCH_ASSOC);
     return $result; 
+}
+
+//Function qui récupère la liste des classes
+function listClasses()
+{
+    $req = connexionBase()-> prepare('SELECT * FROM classes');
+    $req->execute();
+    return $req; 
+}
+
+//Function qui récupère la liste des sports
+function listSports()
+{
+    $req = connexionBase()-> prepare('SELECT * FROM sports');
+    $req->execute();
+    return $req; 
+}
+
+function choixSports()
+{
+    
 }
 
 /*if(isset($_POST['login']))
