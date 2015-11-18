@@ -1,5 +1,6 @@
 <?php
 require_once "./php/dbFunctions.php";
+include "./php/phpToHtml.php";
 
 session_start();
 
@@ -83,6 +84,13 @@ if(isset($_GET["modif"]))
 
                 <label for="mdp" class="labelSize">Mot de passe :</label>
                 <input id="mdp" name="mdp" type="password" class="InputFormulaire" <?php echo $required ?>><br/>
+                
+                <label for="classe" class="labelSize">Classe :</label>
+                <select name="classe">
+                    <?php
+                    CreateListClasses(ListClasses());
+                    ?>
+                </select><br/>
                 <?php
                 if($changerAdmin)
                 {
