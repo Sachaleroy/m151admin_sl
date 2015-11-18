@@ -45,3 +45,18 @@ function createTableDetailsUser($table)
     }
 }
 
+function CreateListClasses($classes)
+{
+    foreach($classes as $c)
+    {
+        echo"<option value='".$c[0]."'>".$c[1]."</option>";
+    }
+}
+
+function CreateListSports($sports)
+{
+    foreach($sports as $s)
+    {
+        echo"<option value='".$s[0]."'>".$s[1]."</option>";
+    }
+}
