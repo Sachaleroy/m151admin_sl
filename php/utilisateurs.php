@@ -15,6 +15,10 @@
         {
             echo "Utilisateur connecté : ".$_SESSION['login']." |   <a href='./deconnexion.php' style='text-decoration: none;'>Déconnexion</a>";
         }
+        else
+        {
+            echo "<a href='../PHP/login.php' style='text-decoration: none;'>Connexion</a>";
+        }
         ?>
         <div id="content">
             <table border="20">

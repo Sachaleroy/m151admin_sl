@@ -66,7 +66,8 @@ if (isset($_POST["login"]))
 //Si le bouton pour le choix des sports est cliqué
 if(isset($_POST["envoyerChoix"]))
 {
-    choixSports();
+    session_start();
+    choixSports($_SESSION['login'], $choixSport1, $choixSport2, $choixSport3, $choixSport4);
 }
 
 //Fonction pour tester si les identifiants existent
@@ -209,9 +210,40 @@ function listSports()
     return $req; 
 }
 
-function choixSports()
+function choixSports($pseudo, $choixSport1, $choixSport2, $choixSport3, $choixSport4)
 {
-    
+    try{
+        connexionBase()->beginTransaction();
+        $req = connexionBase()->prepare("INSERT INTO choix VALUES('".getID($pseudo)[0]."', :sport1, 1)");
+        $req->bindParam(':sport1', $choixSport1, PDO::PARAM_STR);
+        $req->execute();
+
+        $req = connexionBase()->prepare("INSERT INTO choix VALUES('".getID($pseudo)[0]."', :sport2, 2)");
+        $req->bindParam(':sport2', $choixSport2, PDO::PARAM_STR);
+        $req->execute();
+
+        $req = connexionBase()->prepare("INSERT INTO choix VALUES('".getID($pseudo)[0]."', :sport3, 3)");
+        $req->bindParam(':sport3', $choixSport3, PDO::PARAM_STR);
+        $req->execute();
+
+        $req = connexionBase()->prepare("INSERT INTO choix VALUES('".getID($pseudo)[0]."', :sport4, 4)");
+        $req->bindParam(':sport4', $choixSport4, PDO::PARAM_STR);                      
+        $req->execute();
+        connexionBase()->commit();
+
+    }catch(Exception $e)
+    {
+        connexionBase()->rollback();
+    }
+    header('Location: ./sports.php?erreur=1');
+}
+
+
+function getID($pseudo)
+{
+    $req = connexionBase()-> prepare('SELECT idUser FROM user WHERE pseudo="'.$pseudo.'"');
+    $req->execute();
+    return $req ->fetch(); 
 }
 
 /*if(isset($_POST['login']))

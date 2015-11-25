@@ -100,7 +100,7 @@ if(isset($_GET["modif"]))
                 ?>
                 <input type="submit" value="Envoyer <?php echo $modif ?>" name="submit<?php echo $modif ?>" >
                 <input type="reset" value="Réinitialiser">
-                <a href="php/utilisateurs.php">liste d'utilisateurs</a>
+                <a href="php/utilisateurs.php">Liste d'utilisateurs</a><?php if(isset($_SESSION['login'])){?> | | | |  <a href="php/sports.php">Sports</a> <?php } ?>
             </form>
         </div>
     </body>

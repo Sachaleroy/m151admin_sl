@@ -28,7 +28,7 @@ if(!isset($_SESSION['login'])){
         ?>
         <div id="content">
             <h1>Choix des sports</h1>
-            <form action="./php/dbFunctions.php" method="post">
+            <form action="./dbFunctions.php" method="post">
                 <label for="choix1" class="labelSelectSize">Choix 1 :</label>
                 <select name="choix1">
                     <?php
@@ -52,10 +52,11 @@ if(!isset($_SESSION['login'])){
                     <?php
                     CreateListSports(Listsports());
                     ?>
-                </select><br/>                
+                </select><br/>
+                <?php if(isset($_GET['erreur']) && $_GET['erreur'] == 1){?><p style="color: red;">Veuillez choisir 4 sports différents</p><?php } ?>
                 <input type="submit" value="Envoyer choix" name="envoyerChoix" >
                 <input type="reset" value="Réinitialiser">
-                <a href="utilisateurs.php">liste d'utilisateurs</a>
+                <a href="utilisateurs.php">Liste d'utilisateurs</a>
             </form>
         </div>
     </body>
