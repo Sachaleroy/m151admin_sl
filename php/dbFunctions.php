@@ -64,11 +64,7 @@ if (isset($_POST["login"]))
 }
 
 //Si le bouton pour le choix des sports est cliqué
-if(isset($_POST["envoyerChoix"]))
-{
-    session_start();
-    choixSports($_SESSION['login'], $choixSport1, $choixSport2, $choixSport3, $choixSport4);
-}
+
 
 //Fonction pour tester si les identifiants existent
 function IdentifiantDisponible($user, $pass)
@@ -234,8 +230,10 @@ function choixSports($pseudo, $choixSport1, $choixSport2, $choixSport3, $choixSp
     }catch(Exception $e)
     {
         connexionBase()->rollback();
+        return false;
     }
-    header('Location: ./sports.php?erreur=1');
+    header('Location: ./sports.php');
+    return true;
 }
 
 

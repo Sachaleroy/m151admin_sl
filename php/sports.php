@@ -3,6 +3,16 @@ require_once 'dbFunctions.php';
 require_once "phpToHtml.php";
 session_start();
 
+$erreur = "";
+
+if(isset($_POST["envoyerChoix"]))
+{
+    if(choixSports($_SESSION['login'], $choixSport1, $choixSport2, $choixSport3, $choixSport4) != true)
+    {
+        $erreur = "Choisissez 4 sports différents !";
+    }
+}
+
 if(!isset($_SESSION['login'])){
     header('Location: ./utilisateurs.php');
 }
@@ -28,7 +38,7 @@ if(!isset($_SESSION['login'])){
         ?>
         <div id="content">
             <h1>Choix des sports</h1>
-            <form action="./dbFunctions.php" method="post">
+            <form action="#" method="post">
                 <label for="choix1" class="labelSelectSize">Choix 1 :</label>
                 <select name="choix1">
                     <?php
@@ -53,7 +63,7 @@ if(!isset($_SESSION['login'])){
                     CreateListSports(Listsports());
                     ?>
                 </select><br/>
-                <?php if(isset($_GET['erreur']) && $_GET['erreur'] == 1){?><p style="color: red;">Veuillez choisir 4 sports différents</p><?php } ?>
+                <?php echo '<p style="color: red;">'.$erreur.'</p>' ?>
                 <input type="submit" value="Envoyer choix" name="envoyerChoix" >
                 <input type="reset" value="Réinitialiser">
                 <a href="utilisateurs.php">Liste d'utilisateurs</a>
