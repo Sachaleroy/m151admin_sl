@@ -39,37 +39,11 @@ if(isset($_POST['submitModif']))
     $modif = $_GET["modif"];
     UpdateBase($nom, $prenom, $dateNaissance, $description, $email, $pseudo, $mdp, $modif, $estAdmin);
 }
-//Si le bouton de login est cliqué
-if (isset($_POST["login"])) 
-{
-    //Si les champ pseudo et mdp sont set...
-    if (isset($pseudoConnection) && isset($mdpConnection)) 
-    {
-        //...On teste si ces identifiants existent
-        $result = IdentifiantDisponible($pseudoConnection, $mdpConnection);
-        //Si c'est le cas on se connecte
-        if ($result != NULL) {
-    		//... et est redirigé sur le site
-		session_start();
-    		$_SESSION['login'] = $pseudoConnection;
-    		header('Location: ../index.php');
-    		exit();
-    	}
-    	// si on ne trouve aucune réponse, soit le pseudo, soit le mot de passe est faux
-    	else
-        {
-            $erreur = 'Erreur dans le login ou le mot de passe.';
-        }
-    }
-}
-
-//Si le bouton pour le choix des sports est cliqué
-
 
 //Fonction pour tester si les identifiants existent
 function IdentifiantDisponible($user, $pass)
 {
-	$data = connexionBase()->prepare('SELECT pseudo, password FROM user WHERE pseudo=:pseudo AND password=:mdp');
+	$data = connexionBase()->prepare('SELECT pseudo, password FROM user WHERE BINARY pseudo=:pseudo AND password=:mdp');
 	$data->bindParam(':pseudo', $user, PDO::PARAM_STR);
 	$data->bindParam(':mdp', $pass, PDO::PARAM_STR);
 	$data->execute();
@@ -186,8 +160,13 @@ function estAdmin($pseudo)
 {
     $req = connexionBase()-> prepare('SELECT idUser FROM user WHERE pseudo ="'.$pseudo.'" AND estAdmin = 1');
     $req->execute();
-    $result = $req->fetch(PDO::FETCH_ASSOC);
-    return $result; 
+    $result = $req->fetchAll(PDO::FETCH_ASSOC);
+    if($result == NULL){
+        return false;
+    }
+    else{
+        return true;
+    } 
 }
 
 //Function qui récupère la liste des classes
@@ -204,6 +183,36 @@ function listSports()
     $req = connexionBase()-> prepare('SELECT * FROM sports');
     $req->execute();
     return $req; 
+}
+function listSportsActifs()
+{
+    $req = connexionBase()-> prepare('SELECT * FROM sports WHERE estActif = 1');
+    $req->execute();
+    return $req; 
+}
+function sportEstActif($idSport)
+{
+    $req = connexionBase()-> prepare('SELECT * FROM sports WHERE estActif = 1 AND idSport = "'.$idSport.'"');
+    $req->execute();
+    $result = $req->fetchAll(PDO::FETCH_ASSOC);
+    if($result == NULL){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+function rendreActif($idSport)
+{
+    $req = connexionBase()-> prepare('UPDATE sports SET estActif="1" WHERE idsport='.$idSport);
+    $req->execute();
+}
+
+function rendreInactif($idSport)
+{
+    $req = connexionBase()-> prepare('UPDATE sports SET estActif="0" WHERE idsport='.$idSport);
+    $req->execute();
 }
 
 function choixSports($pseudo, $choixSport1, $choixSport2, $choixSport3, $choixSport4)

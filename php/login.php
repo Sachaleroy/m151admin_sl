@@ -1,5 +1,30 @@
 <?php
 require_once 'dbFunctions.php';
+
+//Si le bouton de login est cliqué
+if (isset($_POST["login"])) 
+{
+    //Si les champ pseudo et mdp sont set...
+    if (isset($pseudoConnection) && isset($mdpConnection)) 
+    {
+        //...On teste si ces identifiants existent
+        $result = IdentifiantDisponible($pseudoConnection, $mdpConnection);
+        //Si c'est le cas on se connecte
+        if ($result != NULL) {
+    		//... et est redirigé sur le site
+		session_start();
+    		$_SESSION['login'] = $pseudoConnection;
+    		header('Location: ../index.php');
+    		exit();
+    	}
+    	// si on ne trouve aucune réponse, soit le pseudo, soit le mot de passe est faux
+    	else
+        {
+            $erreur = 'Erreur dans le login ou le mot de passe.';
+        }
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html>

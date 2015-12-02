@@ -60,3 +60,23 @@ function CreateListSports($sports)
         echo"<option value='".$s[0]."'>".$s[1]."</option>";
     }
 }
+function CreateTableSports($sports)
+{
+    foreach($sports as $s)
+    {
+        //$estActif = sportEstactif($s[0]);
+        
+        echo'<tr>';
+        echo'<td>'.$s[1].'</td>';
+        echo'<td><a href="./gestionSports.php?modif='.$s[0].'" style="text-decoration: none;">Modifier</a></td>';
+        if(sportEstActif($s[0]) == false)
+        {
+            echo'<td><a href="./gestionSports.php?rendreActif='.$s[0].'" style="text-decoration: none;">Rendre actif</a></td>';
+        }
+        else
+        {
+            echo'<td><a href="./gestionSports.php?rendreInactif='.$s[0].'" style="text-decoration: none;">Rendre inactif</a></td>';
+        }
+        echo'</tr>';
+    }
+}

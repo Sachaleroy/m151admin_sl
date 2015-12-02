@@ -5,6 +5,7 @@ session_start();
 
 $erreur = "";
 
+//Si le bouton pour le choix des sports est cliqué
 if(isset($_POST["envoyerChoix"]))
 {
     if(choixSports($_SESSION['login'], $choixSport1, $choixSport2, $choixSport3, $choixSport4) != true)
@@ -42,25 +43,25 @@ if(!isset($_SESSION['login'])){
                 <label for="choix1" class="labelSelectSize">Choix 1 :</label>
                 <select name="choix1">
                     <?php
-                    CreateListSports(Listsports());
+                    CreateListSports(ListSportsActifs());
                     ?>
                 </select><br/>
                 <label for="choix2" class="labelSelectSize">Choix 2 :</label>
                 <select name="choix2">
                     <?php
-                    CreateListSports(Listsports());
+                    CreateListSports(ListSportsActifs());
                     ?>
                 </select><br/>
                 <label for="choix3" class="labelSelectSize">Choix 3 :</label>
                 <select name="choix3">
                     <?php
-                    CreateListSports(Listsports());
+                    CreateListSports(ListSportsActifs());
                     ?>
                 </select><br/>
                 <label for="choix4" class="labelSelectSize">Choix 4 :</label>
                 <select name="choix4">
                     <?php
-                    CreateListSports(Listsports());
+                    CreateListSports(ListSportsActifs());
                     ?>
                 </select><br/>
                 <?php echo '<p style="color: red;">'.$erreur.'</p>' ?>
